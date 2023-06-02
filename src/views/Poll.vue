@@ -21,13 +21,26 @@
                 :min="questions[page - 1].answers[0].range[0]"
                 :max="questions[page - 1].answers[0].range[1]"
                 :step="questions[page - 1].answers[0].steps"
+                v-model="questions[page - 1].answers[0].selected"
                 thumb-label></v-slider>
                 
                 <v-select
                 v-if="questions[page - 1].answers[0].component == 'v-select'"
-                label="Select"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                class="w-50 mx-auto my-5 text-left"
+                :label="questions[page - 1].answers[0].label"
+                :hint="questions[page - 1].answers[0].hint"
+                persistent-hint
+                :multiple="questions[page - 1].answers[0].multiple"
+                :chips="questions[page - 1].answers[0].chips"
+                v-model="questions[page - 1].answers[0].selected"
+                :items="questions[page - 1].answers[0].options"
                 ></v-select>
+
+                <v-text-field
+                v-if="questions[page - 1].answers[0].component == 'v-text'"
+                :label="questions[page - 1].answers[0].label"
+                class="w-50 mx-auto"
+                ></v-text-field>
                 
             </div>
             
@@ -105,19 +118,21 @@ export default {
             this.title = 'Umfragen Titel';
             this.questions = [
             {
-                title: 'Question 1',
-                text: `Culpa cupidatat deserunt occaecat ipsum Lorem anim officia duis eu Lorem non. Cupidatat do commodo sunt tempor Lorem fugiat reprehenderit incididunt qui. Id anim dolor minim ex labore exercitation laboris cupidatat. Minim non duis laborum anim irure labore nostrud enim nostrud aliqua. Commodo consectetur sunt cillum dolor sit consequat. Labore nostrud adipisicing labore nisi ut aliqua minim aute deserunt ullamco ex velit eiusmod. Voluptate occaecat magna ea aute id duis deserunt.
-                
-                Quis exercitation culpa et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
+                title: 'Ort',
+                text: `Select a city you like .... | .       na elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
                 answers: [
                 {
                     component: 'v-select',
-                    // TODO: multiple support, chip support also beide mit true, false
+                    options: ['Heidelberg', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming'],
+                    label: 'Citys',
+                    multiple: true,
+                    chips: true,
+                    hint: '',
                 }
                 ]
             },
             {
-                title: 'Question 2',
+                title: 'Slider 0,1',
                 text: `Question 2 ist sehr kurz ...`,
                 answers: [
                 {
@@ -128,28 +143,23 @@ export default {
                 ]
             },
             {
-                title: 'Question 3',
-                text: `Culpa cupidatat deserunt occaecat ipsum Lorem anim officia duis eu Lorem non. Cupidatat do commodo sunt tempor Lorem fugiat reprehenderit incididunt qui. Id anim dolor minim ex labore exercitation laboris cupidatat. Minim non duis laborum anim irure labore nostrud enim nostrud aliqua. Commodo consectetur sunt cillum dolor sit consequat. Labore nostrud adipisicing labore nisi ut aliqua minim aute deserunt ullamco ex velit eiusmod. Voluptate occaecat magna ea aute id duis deserunt.
-                
-                Quis exercitation culpa et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
+                title: 'IQ',
+                text: `Wie hoch ist dein IQ?  velit id anim esse. Cteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
                 answers: [
                 {
                     component: 'v-slider',
-                    range: [0, 100],
-                    steps: 10,
+                    range: [60, 200],
+                    steps: 1,
                 }
                 ]
             },
             {
-                title: 'Question 4',
-                text: `Culpa cupidatat deserunt occaecat ipsum Lorem anim officia duis eu Lorem non. Cupidatat do commodo sunt tempor Lorem fugiat reprehenderit incididunt qui. Id anim dolor minim ex labore exercitation laboris cupidatat. Minim non duis laborum anim irure labore nostrud enim nostrud aliqua. Commodo consectetur sunt cillum dolor sit consequat. Labore nostrud adipisicing labore nisi ut aliqua minim aute deserunt ullamco ex velit eiusmod. Voluptate occaecat magna ea aute id duis deserunt.
-                
-                Quis exercitation culpa et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
+                title: 'Wort',
+                text: `Dein Lieblingswort? . a et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
                 answers: [
                 {
-                    component: 'v-slider',
-                    range: [1, 10],
-                    steps: 0.1,
+                    component: 'v-text',
+                    label: 'Dein Lieblingswort',
                 }
                 ]
             },
