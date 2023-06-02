@@ -8,40 +8,43 @@
     
     <v-container class="text-center">
         <h1>{{ title }}</h1>
-
-        <v-container class="border rounded-xl my-5" style="min-height: 60vh">
+        
+        <v-container class="border rounded-xl my-5" style="min-height: 60vh" v-if="questions.length > 0">
             <div>
                 <h3 class="text-h5 text-center">{{ questions[page - 1].title }}</h3>
                 
                 <p class="text-center w-50 mx-auto my-5">{{ questions[page - 1].text }}</p>
                 
-                <v-slider 
-                v-if="questions[page - 1].answers[0].component == 'v-slider'"
-                color="orange"
-                class="w-75 mx-auto"
-                :min="questions[page - 1].answers[0].range[0]"
-                :max="questions[page - 1].answers[0].range[1]"
-                :step="questions[page - 1].answers[0].steps"
-                v-model="questions[page - 1].answers[0].selected"
-                thumb-label></v-slider>
-                
-                <v-select
-                v-if="questions[page - 1].answers[0].component == 'v-select'"
-                class="w-50 mx-auto my-5 text-left"
-                :label="questions[page - 1].answers[0].label"
-                :hint="questions[page - 1].answers[0].hint"
-                persistent-hint
-                :multiple="questions[page - 1].answers[0].multiple"
-                :chips="questions[page - 1].answers[0].chips"
-                v-model="questions[page - 1].answers[0].selected"
-                :items="questions[page - 1].answers[0].options"
-                ></v-select>
-
-                <v-text-field
-                v-if="questions[page - 1].answers[0].component == 'v-text'"
-                :label="questions[page - 1].answers[0].label"
-                class="w-50 mx-auto"
-                ></v-text-field>
+                <div v-if="questions[page - 1].answers && questions[page - 1].answers.length > 0">
+                    <v-slider 
+                    v-if="questions[page - 1].answers[0].component == 'v-slider'"
+                    color="orange"
+                    class="w-75 mx-auto"
+                    :min="questions[page - 1].answers[0].range[0]"
+                    :max="questions[page - 1].answers[0].range[1]"
+                    :step="questions[page - 1].answers[0].steps"
+                    v-model="questions[page - 1].answers[0].selected"
+                    thumb-label></v-slider>
+                    
+                    <v-select
+                    v-if="questions[page - 1].answers[0].component == 'v-select'"
+                    class="w-50 mx-auto my-5 text-left"
+                    :label="questions[page - 1].answers[0].label"
+                    :hint="questions[page - 1].answers[0].hint"
+                    persistent-hint
+                    :multiple="questions[page - 1].answers[0].multiple"
+                    :chips="questions[page - 1].answers[0].chips"
+                    v-model="questions[page - 1].answers[0].selected"
+                    :items="questions[page - 1].answers[0].options"
+                    ></v-select>
+                    
+                    <v-text-field
+                    v-if="questions[page - 1].answers[0].component == 'v-text'"
+                    :label="questions[page - 1].answers[0].label"
+                    v-model="questions[page - 1].answers[0].selected"
+                    class="w-50 mx-auto"
+                    ></v-text-field>
+                </div>
                 
             </div>
             
@@ -115,105 +118,22 @@ export default {
                 for (let i = 0; i < this.questionCount; i++) {
                     bow.push(this.questions[i].answers[0].selected);
                 }
-
-                console.log(bow);
-                // TODO: bow stattdessen an die api senden
+                
+                //console.log(bow);
+                axios.post(this.$api + 'postPoll/' + id, {answers: bow}).then(response => {
+                    console.log(response);
+                })
             }
         },  
         created() {
             let id = this.$route.params.id;
-            axios.get(this.$api + 'getPoll/' + id).then(response => {
-                console.log(response)
+            axios.post(this.$api + 'getPoll/' + id).then(response => {
+                this.title = response.data.title;
+                this.questions = response.data.questions;
+                //console.log(response);
+                //console.log(response.data.questions);
+                
             });
-            // should get the title, questions
-            this.title = 'Umfragen Titel';
-            this.questions = [
-            {
-                title: 'Ort',
-                text: `Select a city you like .... | .       na elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
-                answers: [
-                {
-                    component: 'v-select',
-                    options: ['Heidelberg', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming'],
-                    label: 'Citys',
-                    multiple: true,
-                    chips: true,
-                    hint: '',
-                }
-                ]
-            },
-            {
-                title: 'Slider 0,1',
-                text: `Question 2 ist sehr kurz ...`,
-                answers: [
-                {
-                    component: 'v-slider',
-                    range: [1, 10],
-                    steps: 0.1,
-                }
-                ]
-            },
-            {
-                title: 'IQ',
-                text: `Wie hoch ist dein IQ?  velit id anim esse. Cteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
-                answers: [
-                {
-                    component: 'v-slider',
-                    range: [60, 200],
-                    steps: 1,
-                }
-                ]
-            },
-            {
-                title: 'Wort',
-                text: `Dein Lieblingswort? . a et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
-                answers: [
-                {
-                    component: 'v-text',
-                    label: 'Dein Lieblingswort',
-                }
-                ]
-            },
-            {
-                title: 'Question 5',
-                text: `Culpa cupidatat deserunt occaecat ipsum Lorem anim officia duis eu Lorem non. Cupidatat do commodo sunt tempor Lorem fugiat reprehenderit incididunt qui. Id anim dolor minim ex labore exercitation laboris cupidatat. Minim non duis laborum anim irure labore nostrud enim nostrud aliqua. Commodo consectetur sunt cillum dolor sit consequat. Labore nostrud adipisicing labore nisi ut aliqua minim aute deserunt ullamco ex velit eiusmod. Voluptate occaecat magna ea aute id duis deserunt.
-                
-                Quis exercitation culpa et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
-                answers: [
-                {
-                    component: 'v-slider',
-                    range: [1, 10],
-                    steps: 0.1,
-                }
-                ]
-            },
-            {
-                title: 'Question 6',
-                text: `Culpa cupidatat deserunt occaecat ipsum Lorem anim officia duis eu Lorem non. Cupidatat do commodo sunt tempor Lorem fugiat reprehenderit incididunt qui. Id anim dolor minim ex labore exercitation laboris cupidatat. Minim non duis laborum anim irure labore nostrud enim nostrud aliqua. Commodo consectetur sunt cillum dolor sit consequat. Labore nostrud adipisicing labore nisi ut aliqua minim aute deserunt ullamco ex velit eiusmod. Voluptate occaecat magna ea aute id duis deserunt.
-                
-                Quis exercitation culpa et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
-                answers: [
-                {
-                    component: 'v-slider',
-                    range: [1, 10],
-                    steps: 0.1,
-                }
-                ]
-            },
-            {
-                title: 'Question 7',
-                text: `Culpa cupidatat deserunt occaecat ipsum Lorem anim officia duis eu Lorem non. Cupidatat do commodo sunt tempor Lorem fugiat reprehenderit incididunt qui. Id anim dolor minim ex labore exercitation laboris cupidatat. Minim non duis laborum anim irure labore nostrud enim nostrud aliqua. Commodo consectetur sunt cillum dolor sit consequat. Labore nostrud adipisicing labore nisi ut aliqua minim aute deserunt ullamco ex velit eiusmod. Voluptate occaecat magna ea aute id duis deserunt.
-                
-                Quis exercitation culpa et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.`,
-                answers: [
-                {
-                    component: 'v-slider',
-                    range: [1, 10],
-                    steps: 0.1,
-                }
-                ]
-            },
-            ]
         },
         computed: {
             questionCount() {
