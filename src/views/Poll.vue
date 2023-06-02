@@ -133,6 +133,13 @@ export default {
                 //console.log(response);
                 //console.log(response.data.questions);
                 
+            }).catch(err => {
+                if (err.response.status == 404) {
+                    this.title = 'Poll nicht gefunden';
+                } else {
+                    // an unknown error occured
+                    // console.log(err);
+                }
             });
         },
         computed: {
