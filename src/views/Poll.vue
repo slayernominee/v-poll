@@ -18,6 +18,7 @@
                 <v-slider 
                 v-if="questions[page - 1].answers[0].component == 'v-slider'"
                 color="orange"
+                class="w-75 mx-auto"
                 :min="questions[page - 1].answers[0].range[0]"
                 :max="questions[page - 1].answers[0].range[1]"
                 :step="questions[page - 1].answers[0].steps"
@@ -45,7 +46,7 @@
             </div>
             
             <v-btn v-show="page < questionCount" @click="next_question">Weiter</v-btn>
-            <v-btn v-show="page == questionCount">Absenden</v-btn>
+            <v-btn v-show="page == questionCount" @click="send_poll">Absenden</v-btn>
             
         </v-container>
         
@@ -107,6 +108,16 @@ export default {
                 if (this.page < this.questionCount) {
                     this.page++;
                 }
+            },
+            send_poll() {
+                let id = this.$route.params.id;
+                let bow = [];
+                for (let i = 0; i < this.questionCount; i++) {
+                    bow.push(this.questions[i].answers[0].selected);
+                }
+
+                console.log(bow);
+                // TODO: bow stattdessen an die api senden
             }
         },  
         created() {
