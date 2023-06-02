@@ -8,7 +8,7 @@
     
     <v-container class="text-center">
         <h1>{{ title }}</h1>
-        
+
         <v-container class="border rounded-xl my-5" style="min-height: 60vh">
             <div>
                 <h3 class="text-h5 text-center">{{ questions[page - 1].title }}</h3>
@@ -122,7 +122,7 @@ export default {
         },  
         created() {
             let id = this.$route.params.id;
-            axios.get('/api/getPoll/' + id).then(response => {
+            axios.get(this.$api + 'getPoll/' + id).then(response => {
                 console.log(response)
             });
             // should get the title, questions

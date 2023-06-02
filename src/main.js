@@ -17,4 +17,7 @@ const app = createApp(App)
 
 registerPlugins(app)
 
+// API Address
+app.config.globalProperties.$api = 'http://localhost:8080/api/'
+
 app.mount('#app')
