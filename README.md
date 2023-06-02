@@ -1,4 +1,11 @@
-# base
+# settings
+src/main.js file
+change api link to a server where your backend server is running 
+
+
+
+
+# vite
 
 ## Project setup
 
