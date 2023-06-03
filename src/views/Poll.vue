@@ -7,6 +7,27 @@
     </v-breadcrumbs>
     
     <v-container class="text-center">
+
+        
+        <v-alert
+        id="already_voted_alert"
+        v-model="already_voted_alert"
+        border="start"
+        elevation="2"
+        closable
+        type="warning"
+        class="my-5 text-left"
+        close-label="Schließen"
+        title="Bereits Abgestimmt"
+        >
+        Du hast bereits für diese Umfrage abgestimmt, insofern werden weitere Abgaben nicht mehr gezählt.<br>
+        Wenn du denkst, dass das ein Fehler ist, dann kontaktiere bitte einen Administrator.<br>
+        </v-alert
+        >
+        
+        
+        
+        
         <h1>{{ title }}</h1>
         
         <v-container class="border rounded-xl my-5" style="min-height: 60vh" v-if="questions.length > 0">
@@ -49,7 +70,7 @@
             </div>
             
             <v-btn v-show="page < questionCount" @click="next_question">Weiter</v-btn>
-            <v-btn v-show="page == questionCount" @click="send_poll">Absenden</v-btn>
+            <v-btn v-show="page == questionCount" @click="send_poll" :disabled="!voteable">Absenden</v-btn>
             
         </v-container>
         
@@ -97,13 +118,15 @@ export default {
                 exact: true,
                 to: {
                     name: "Poll",
-                    params: { id: ":id" },
+                    params: { id: id },
                 }
             }
             ],
             title: "<Poll Titel>",
                 page: 1,
                 questions: [],
+                already_voted_alert: false,
+                voteable: true,
             }
         },
         methods: {
@@ -122,6 +145,13 @@ export default {
                 //console.log(bow);
                 axios.post(this.$api + 'postPoll/' + id, {answers: bow}).then(response => {
                     console.log(response);
+                    this.$router.push({name: 'PollResult', params: {id: id}});
+                }).catch(err => {
+                    if (err.response.status == 403 && err.response.data == 'already voted') {
+                        this.already_voted_alert = true;
+                        this.voteable = false;
+                        document.getElementById('already_voted_alert').scrollIntoView();
+                    }
                 })
             }
         },  
@@ -132,7 +162,12 @@ export default {
                 this.questions = response.data.questions;
                 //console.log(response);
                 //console.log(response.data.questions);
-                
+                axios.post(this.$api + 'voteable/' + id).then(response => {
+                    this.voteable = response.data.voteable;
+                    if (!this.voteable) {
+                        this.already_voted_alert = true;
+                    }
+                })
             }).catch(err => {
                 if (err.response.status == 404) {
                     this.title = 'Poll nicht gefunden';

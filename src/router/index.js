@@ -28,6 +28,12 @@ const routes = [
 
         component: () => import(/* webpackChunkName: "poll" */ '@/views/Poll.vue'),
       },
+      {
+        path: '/poll_result/:id',
+        name: 'PollResult',
+
+        component: () => import(/* webpackChunkName: "poll_result" */ '@/views/PollResult.vue'),
+      }
     ],
   },
 ]
