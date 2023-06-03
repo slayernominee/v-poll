@@ -136,6 +136,8 @@ export default {
             }).catch(err => {
                 if (err.response.status == 404) {
                     this.title = 'Poll nicht gefunden';
+                } else if (err.response.status == 400) {
+                    this.title = 'Ungültige Anfrage';
                 } else {
                     // an unknown error occured
                     // console.log(err);
