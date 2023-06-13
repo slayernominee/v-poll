@@ -164,16 +164,33 @@ def getResult(id):
 
     results = []
 
+    known_objects = []
+    object_indexs = {}
+
     for answer in answers:
         a = answer['answers']
+        
         for i, o in enumerate(a):
             if len(results) < i+1:
                 results.append([])
+                known_objects.append([])
             
-            results[i].append(o)
-    
-    print(results)
+            t = {
+                "object": o,
+                "count": 1
+            }
 
+            if o not in known_objects[i]:
+                known_objects[i].append(o)
+                object_indexs[str(i) + '_' + str(o)] = len(results[i])
+                results[i].append(t)
+            else:
+                x = object_indexs[str(i) + '_' + str(o)]
+                results[i][x]['count'] += 1
+
+
+    print(object_indexs)
+    
     if answers == [] or answers == None or answers == ():
         logRequest(request, 404, 'no poll with this id')
         return abort(404)
