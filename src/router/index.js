@@ -33,6 +33,12 @@ const routes = [
         name: 'PollResult',
 
         component: () => import(/* webpackChunkName: "poll_result" */ '@/views/PollResult.vue'),
+      },
+      {
+        path: '/login',
+        name: 'Login',
+
+        component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
       }
     ],
   },
