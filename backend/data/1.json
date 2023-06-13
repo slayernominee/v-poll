@@ -1,0 +1,55 @@
+{
+    "id": 1,
+    "title": "Test Poll",
+    "questions": [
+        {
+            "title": "Ort",
+            "text": "Select a city you like .... | .       na elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.",
+            "answers": [
+                {
+                    "component": "v-select",
+                    "options": ["Heidelberg", "Berlin", "Florida", "Georgia", "Texas", "Wyoming"],
+                    "label": "Citys",
+                    "multiple": true,
+                    "chips": true,
+                    "hint": ""
+                }
+            ]
+        },
+        {
+            "title": "Slider 0,1",
+            "text": "Question 2 ist sehr kurz ..",
+            "answers": [
+                {
+                    "component": "v-slider",
+                    "range": [1, 10],
+                    "steps": 0.1
+                }
+            ]
+        },
+        {
+            "title": "IQ",
+            "text": "Wie hoch ist dein IQ?  velit id anim esse. Cteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.",
+            "answers": [
+                {
+                    "component": "v-slider",
+                    "range": [60, 200],
+                    "steps": 1
+                }
+            ]
+        },
+        {
+            "title": "Wort",
+            "text": "Dein Lieblingswort? . a et commodo velit id anim esse. Consectetur magna elit occaecat Lorem mollit. Amet nostrud aliqua ea excepteur. Ad incididunt enim sit elit adipisicing eu tempor Lorem dolore sunt eiusmod. Dolore elit amet officia pariatur cupidatat anim reprehenderit voluptate anim ex aliquip proident cillum ad.",
+            "answers": [
+                {
+                    "component": "v-text",
+                    "label": "Dein Lieblingswort"
+                }
+            ]
+        }
+    ],
+    "answers": [
+        
+    ]
+}

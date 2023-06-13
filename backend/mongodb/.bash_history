@@ -1,0 +1,4 @@
+mongo
+clear
+mongosh
+exit
