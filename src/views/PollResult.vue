@@ -4,60 +4,99 @@
             <v-icon size="small" icon="$vuetify"></v-icon>
         </template>
     </v-breadcrumbs>
-
-    <v-container class="text-center my-15">
-        <h1>Abstimmung beendend</h1>
-
-        <v-icon class="my-5" size="100">mdi-party-popper</v-icon>
-
-        <p>Vielen Dank für deine Teilnahme an diesem Poll.</p>
-
-        <v-btn @click="$router.push({ name: 'Home' })" class="mt-10" variant="tonal" size="x-large">
-            <v-icon class="mr-2">mdi-home</v-icon>
-            Home
-        </v-btn>
-    </v-container>
+    <v-container>
+        <h1 class="text-center">Abstimmungs Ergebnisse</h1>
+        
+        <div class="bg-grey-darken-4 pt-4 pl-7 pr-7 mt-7 pb-3 rounded-lg">
+            <div v-for="(question, i) in questions" class="mt-4">
+                <h2>{{ question.title }}</h2>
+                
+                <v-table theme="dark">
+                    <thead>
+                        <tr>
+                            <th class="text-left">
+                                Option
+                            </th>
+                            <th class="text-left">
+                                Stimmen
+                            </th>
+                            <th class="text-left">
+                                Prozent
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                        v-for="answer in answers[i]"
+                        >
+                        <td>{{ answer }}</td>
+                        <td>1</td>
+                        <td>...</td>
+                    </tr>
+                </tbody>
+            </v-table>
+            
+            <hr class="mt-7 mb-7">
+        </div>
+    </div>
+</v-container>
 </template>
 
-<script>
+<script lang="ts">
+import axios from 'axios';
+
 export default {
-    name: "Poll-Result",
+    name: 'PollResult',
     data() {
         let id = this.$route.params.id;
         return {
+            answers: [],
+            questions: [],
             breadcrumps: [
-                {
-                    text: "Home",
-                    disabled: false,
-                    link: true,
-                    exact: true,
-                    to: {
-                        name: "Home",
-                        params: {},
-                    }
-                },
-                {
-                    text: "Polls",
-                    disabled: false,
-                    link: true,
-                    exact: true,
-                    to: {
-                        name: "Poll",
-                        params: { id: id },
-                    }
-                },
-                {
-                    text: id,
-                    disabled: true,
-                    link: true,
-                    exact: true,
-                    to: {
-                        name: "Poll",
-                        params: { id: id },
-                    }
+            {
+                text: "Home",
+                disabled: false,
+                link: true,
+                exact: true,
+                to: {
+                    name: "Home",
+                    params: {},
                 }
+            },
+            {
+                text: "Poll Result",
+                disabled: false,
+                link: true,
+                exact: true,
+                to: {
+                    name: "PollResult",
+                    params: {},
+                }
+            },
+            {
+                text: id,
+                disabled: true,
+                link: true,
+                exact: true,
+                to: {
+                    name: "PollResult",
+                    params: { id: id },
+                }
+            }
             ]
         }
+    },
+    created() {
+        let id = this.$route.params.id;
+        axios.post(this.$api + 'getResult/' + id).then((res) => {
+            this.questions = res.data.questions;
+            this.answers = res.data.answers;
+        });
     }
 }
+
 </script>
+
+<style scoped>
+
+</style>

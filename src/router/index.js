@@ -30,15 +30,21 @@ const routes = [
       },
       {
         path: '/poll_result/:id',
-        name: 'PollResult',
+        name: 'PollEnd',
 
-        component: () => import(/* webpackChunkName: "poll_result" */ '@/views/PollResult.vue'),
+        component: () => import(/* webpackChunkName: "poll_result" */ '@/views/PollEnd.vue'),
       },
       {
         path: '/login',
         name: 'Login',
 
         component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+      },
+      {
+        path: '/poll/result/:id',
+        name: 'PollResult',
+
+        component: () => import(/* webpackChunkName: "poll_result" */ '@/views/PollResult.vue'),
       }
     ],
   },

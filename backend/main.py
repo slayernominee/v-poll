@@ -150,6 +150,42 @@ def postPoll(id):
         
     return 'ok'
 
+@app.route('/api/getResult/<id>', methods=['POST'])
+@cross_origin()
+def getResult(id):
+    try:
+        hex_id = int(id, 16)
+    except:
+        logRequest(request, 400, 'id is not hex')
+        return abort(400)
+
+    poll = mo['polls']['polls'].find_one({'_id': ObjectId(id)})
+    answers = mo['polls']['answers'].find({'poll_id': str(id)})
+
+    results = []
+
+    for answer in answers:
+        a = answer['answers']
+        for i, o in enumerate(a):
+            if len(results) < i+1:
+                results.append([])
+            
+            results[i].append(o)
+    
+    print(results)
+
+    if answers == [] or answers == None or answers == ():
+        logRequest(request, 404, 'no poll with this id')
+        return abort(404)
+
+    data = {
+        "answers": results,
+        "questions": poll['questions']
+    }
+
+    logRequest(request, 200, 'success')
+    return data
+
 @app.route('/api/getPopularPolls', methods=['POST'])
 @cross_origin()
 def getPopularPolls():
@@ -167,4 +203,4 @@ def getPopularPolls():
     
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, threaded=True)
