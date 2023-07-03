@@ -29,8 +29,8 @@
                         <tr
                         v-for="answer in answers[i]"
                         >
-                        <td>{{ answer }}</td>
-                        <td>1</td>
+                        <td>{{ answer.object }}</td>
+                        <td>{{ answer.count }}</td>
                         <td>...</td>
                     </tr>
                 </tbody>
