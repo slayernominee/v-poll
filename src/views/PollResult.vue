@@ -27,7 +27,7 @@
                     </thead>
                     <tbody>
                         <tr
-                        v-for="answer in answers[i]"
+                        v-for="answer in orderedAnswers(answers[i])"
                         >
                         <td>{{ answer.object }}</td>
                         <td>{{ answer.count }}</td>
@@ -92,6 +92,13 @@ export default {
             this.questions = res.data.questions;
             this.answers = res.data.answers;
         });
+    },
+    methods: {
+        orderedAnswers(answers) {
+            return answers.sort(function(a, b) {
+                return parseFloat(a.count) - parseFloat(b.count);
+            }).reverse()
+        }
     }
 }
 
