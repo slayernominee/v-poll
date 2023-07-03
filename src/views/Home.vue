@@ -54,7 +54,7 @@ export default {
     }
   },
   created() {
-    axios.post(this.$api + '/getPopularPolls').then(response => {
+    axios.post(this.$api + 'getPopularPolls').then(response => {
       this.popular_polls = response.data.popular_polls;
     });
   }
