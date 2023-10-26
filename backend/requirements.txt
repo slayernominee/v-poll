@@ -10,4 +10,4 @@ MarkupSafe==2.1.2
 pymongo==4.3.3
 six==1.16.0
 ua-parser==0.16.1
-Werkzeug==2.3.4
+Werkzeug==3.0.1
